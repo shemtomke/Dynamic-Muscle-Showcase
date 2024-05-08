@@ -179,6 +179,18 @@ namespace StarterAssets
                 GroundedCheck();
                 Move();
             }
+            else
+            {
+                Stretch();
+                JumpingJack();
+                Plank();
+                Situps();
+                Squat();
+                Sit();
+                LiftPart();
+                PikeWalk();
+                
+            }
             
             Sit();
             Stretch();
