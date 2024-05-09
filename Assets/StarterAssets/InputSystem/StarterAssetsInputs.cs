@@ -22,7 +22,8 @@ namespace StarterAssets
 		public bool plank;
 		public bool bicep;
 		public bool liftPart;
-		public bool pickUpNPlace;
+		public bool carry;
+        public bool pick;
 		public bool pikeWalk;
         public bool bowl;
 		public bool battle;
@@ -88,7 +89,11 @@ namespace StarterAssets
         }
         public void OnPickUpNPlace(InputValue value)
         {
-            PickPlaceInput(value.isPressed);
+            PickInput(value.isPressed);
+        }
+        public void OnCarry(InputValue value)
+        {
+            CarryInput(value.isPressed);
         }
         public void OnPlank(InputValue value)
         {
@@ -205,11 +210,18 @@ namespace StarterAssets
                 squat = !squat;
             }
         }
-        public void PickPlaceInput(bool pickUpPlaceState)
+        public void CarryInput(bool carryState)
         {
-            if (pickUpPlaceState)
+            if (carryState)
             {
-                pickUpNPlace = !pickUpNPlace;
+                carry = !carry;
+            }
+        }
+        public void PickInput(bool pickState)
+        {
+            if (pickState)
+            {
+                pick = !pick;
             }
         }
         public void PlankInput(bool newPlankState)

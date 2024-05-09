@@ -104,15 +104,15 @@ namespace StarterAssets
         private int _animIDKickFootball;
         private int _animIDDrive;
         private int _animIDBowl;
-        private int _animIDBattling;
-        private int _animIDPickupPlace;
+        private int _animIDBatting;
         private int _animIDSquat;
         private int _animIDSitups;
-        private int _animIDPickUpNPlace;
+        private int _animIDPicking;
         private int _animIDJumpingJack;
         private int _animIDPlank;
         private int _animIDPikeWalk;
         private int _animIDLiftPart;
+        private int _animIDCarryBoxPart;
         private int _animIDBicep;
 
 #if ENABLE_INPUT_SYSTEM 
@@ -203,6 +203,10 @@ namespace StarterAssets
             DriveCar();
             KickBall();
             Bicep();
+            Pick();
+            Carry();
+            Bat();
+            Bowl();
         }
 
         private void LateUpdate()
@@ -218,15 +222,15 @@ namespace StarterAssets
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
             _animIDStretch = Animator.StringToHash("Stretch");
+            _animIDCarryBoxPart = Animator.StringToHash("CarryBox");
             _animIDSit = Animator.StringToHash("Sit");
             _animIDKickFootball = Animator.StringToHash("KickBall");
             _animIDDrive = Animator.StringToHash("Drive");
             _animIDBowl = Animator.StringToHash("Bowl");
-            _animIDBattling = Animator.StringToHash("Battling");
-            _animIDPickupPlace = Animator.StringToHash("PickUpNPlace");
+            _animIDBatting = Animator.StringToHash("Bat");
+            _animIDPicking = Animator.StringToHash("Picking");
             _animIDSquat = Animator.StringToHash("Squat");
             _animIDSitups = Animator.StringToHash("Situps");
-            _animIDPickUpNPlace = Animator.StringToHash("PickUpNPlace");
             _animIDJumpingJack = Animator.StringToHash("JumpingJack");
             _animIDPlank = Animator.StringToHash("Plank");
             _animIDPikeWalk = Animator.StringToHash("PikeWalk");
@@ -447,6 +451,18 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
         }
+        void OnLiftStart(AnimationEvent animationEvent)
+        {
+            Debug.Log("Lift Has started!");
+        }
+        void OnLiftEnd(AnimationEvent animationEvent)
+        {
+            Debug.Log("Lift Has started!");
+        }
+        void OnFinishStretch(AnimationEvent animationEvent)
+        {
+            Debug.Log("Finish Stretch!");
+        }
 
         void EnablePlayerMovement()
         {
@@ -564,11 +580,27 @@ namespace StarterAssets
             }
         }
         // Pickup & Place (P)
-        void PickPlace()
+        void Pick()
         {
             if (_hasAnimator)
             {
-                _animator.SetTrigger(_animIDStretch);
+                if (_input.pick)
+                {
+                    lockPlayerMovement = true;
+                    _animator.SetTrigger(_animIDPicking);
+                    _input.pick = false;
+                }
+            }
+        }
+        void Carry()
+        {
+            // Check if
+            if(_hasAnimator)
+            {
+                if(_input.carry)
+                {
+
+                }
             }
         }
         // Driving - Add Car Controller - F/Return to enter to car
@@ -586,15 +618,15 @@ namespace StarterAssets
         {
             if (_hasAnimator)
             {
-                _animator.SetTrigger(_animIDStretch);
+                _animator.SetTrigger(_animIDBowl);
             }
         }
         // Battling - N
-        void Battle()
+        void Bat()
         {
             if (_hasAnimator)
             {
-                _animator.SetTrigger(_animIDStretch);
+                _animator.SetTrigger(_animIDBatting);
             }
         }
     }
