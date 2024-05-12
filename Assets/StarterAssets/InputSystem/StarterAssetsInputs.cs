@@ -38,22 +38,31 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
 		{
+            if (!cursorLocked)
+                return;
+
 			MoveInput(value.Get<Vector2>());
 		}
 
 		public void OnLook(InputValue value)
 		{
-			if(cursorInputForLook)
-			{
-				LookInput(value.Get<Vector2>());
-			}
+            if(cursorLocked)
+            {
+                if (cursorInputForLook)
+                {
+                    LookInput(value.Get<Vector2>());
+                }
+            }
 		}
 
 		public void OnJump(InputValue value)
 		{
 			JumpInput(value.isPressed);
 		}
-
+        public void OnEscape(InputValue value)
+        {
+            EscapeInput(value.isPressed);
+        }
 		public void OnSprint(InputValue value)
 		{
 			SprintInput(value.isPressed);
@@ -128,8 +137,15 @@ namespace StarterAssets
 		{
 			jump = newJumpState;
 		}
+        public void EscapeInput(bool newEscapeInput)
+        {
+            if (newEscapeInput)
+            {
+                cursorLocked = !cursorLocked;
+            }
+        }
 
-		public void SprintInput(bool newSprintState)
+        public void SprintInput(bool newSprintState)
 		{
 			sprint = newSprintState;
 		}
@@ -233,12 +249,17 @@ namespace StarterAssets
         }
         private void OnApplicationFocus(bool hasFocus)
 		{
-			SetCursorState(cursorLocked);
+			
 		}
+        private void Update()
+        {
+            SetCursorState(cursorLocked);
+        }
 
-		private void SetCursorState(bool newState)
+        private void SetCursorState(bool newState)
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = newState ? false: true;
 		}
 	}
 	

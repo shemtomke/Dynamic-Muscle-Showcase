@@ -12,10 +12,8 @@ public class Chair : MonoBehaviour
     bool isSitted = false;
 
     [Header("Player Position & Rotation")]
-    public Vector3 playerSitPosition;
-    public Vector3 playerSitRotation;
-    public Vector3 playerExitChairPosition;
-    public Vector3 playerExitChairRotation;
+    public Transform playerSitTransform;
+    public Transform playerExitChairTransform;
 
     private void Start()
     {
@@ -29,10 +27,8 @@ public class Chair : MonoBehaviour
             // Perform animation of the player to sit
             if(starterAssetsInputs.sit)
             {
-                other.gameObject.transform.position = playerSitPosition;
-
-                Quaternion rotation = Quaternion.Euler(playerSitRotation);
-                other.gameObject.transform.rotation = rotation;
+                other.gameObject.transform.position = playerSitTransform.position;
+                other.gameObject.transform.rotation = playerSitTransform.rotation;
 
                 isSitted = true;
                 Debug.Log("Sit is true!");
@@ -46,10 +42,8 @@ public class Chair : MonoBehaviour
             // Perform animation of the player to sit
             if (!starterAssetsInputs.sit && isSitted)
             {
-                other.gameObject.transform.position = playerExitChairPosition;
-
-                Quaternion rotation = Quaternion.Euler(playerExitChairRotation);
-                other.gameObject.transform.rotation = rotation;
+                other.gameObject.transform.position = playerExitChairTransform.position;
+                other.gameObject.transform.rotation = playerExitChairTransform.rotation;
 
                 isSitted = false;
             }
@@ -57,10 +51,8 @@ public class Chair : MonoBehaviour
             // Perform animation of the player to sit
             if (starterAssetsInputs.sit)
             {
-                other.gameObject.transform.position = playerSitPosition;
-
-                Quaternion rotation = Quaternion.Euler(playerSitRotation);
-                other.gameObject.transform.rotation = rotation;
+                other.gameObject.transform.position = playerSitTransform.position;
+                other.gameObject.transform.rotation = playerSitTransform.rotation;
 
                 isSitted = true;
                 Debug.Log("Sit is true!");

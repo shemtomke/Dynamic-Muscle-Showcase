@@ -113,7 +113,17 @@ namespace StarterAssets
         private int _animIDPikeWalk;
         private int _animIDLiftPart;
         private int _animIDCarryBoxPart;
+        private int _animIDPlaceBoxPart;
         private int _animIDBicep;
+
+        //animation boolean events
+        public bool isStartLift = false;
+        public bool isEndLift = false;
+        public bool isFinishStretch = false;
+        public bool isPlaceBox = false;
+        public bool isPickObject = false;
+        public bool isDropObject = false;
+        public bool isKickBall = false;
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
@@ -179,25 +189,13 @@ namespace StarterAssets
                 GroundedCheck();
                 Move();
             }
-            else
-            {
-                Stretch();
-                JumpingJack();
-                Plank();
-                Situps();
-                Squat();
-                Sit();
-                LiftPart();
-                PikeWalk();
-                
-            }
-            
-            Sit();
+
             Stretch();
             JumpingJack();
             Plank();
             Situps();
             Squat();
+            Sit();
             LiftPart();
             PikeWalk();
             DriveCar();
@@ -223,6 +221,7 @@ namespace StarterAssets
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
             _animIDStretch = Animator.StringToHash("Stretch");
             _animIDCarryBoxPart = Animator.StringToHash("CarryBox");
+            _animIDPlaceBoxPart = Animator.StringToHash("PlaceBox");
             _animIDSit = Animator.StringToHash("Sit");
             _animIDKickFootball = Animator.StringToHash("KickBall");
             _animIDDrive = Animator.StringToHash("Drive");
@@ -431,6 +430,7 @@ namespace StarterAssets
                 GroundedRadius);
         }
 
+        // Animation Events
         private void OnFootstep(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
@@ -454,23 +454,41 @@ namespace StarterAssets
         void OnLiftStart(AnimationEvent animationEvent)
         {
             Debug.Log("Lift Has started!");
+            isStartLift = true;
         }
         void OnLiftEnd(AnimationEvent animationEvent)
         {
             Debug.Log("Lift Has started!");
+            isEndLift = true;
         }
         void OnFinishStretch(AnimationEvent animationEvent)
         {
             Debug.Log("Finish Stretch!");
+            isFinishStretch = true;
         }
-
-        void EnablePlayerMovement()
+        void OnPlaceBox(AnimationEvent animationEvent)
         {
-            lockPlayerMovement = false;
+            isPlaceBox = true;
         }
-        void DisablePlayerMovement()
+        void OnFinishPlace(AnimationEvent animationEvent)
         {
-            lockPlayerMovement = true;
+            // Continue To idle
+            if (_hasAnimator)
+            {
+                _animator.SetBool(_animIDPlaceBoxPart, true);
+            }
+        }
+        void OnPickObject(AnimationEvent animationEvent)
+        {
+            isPickObject = true;
+        }
+        void OnDropObject(AnimationEvent animationEvent)
+        {
+            isDropObject = true;
+        }
+        void OnKickBall(AnimationEvent animationEvent)
+        {
+            isKickBall = true;
         }
 
         // R - Stretch
@@ -595,12 +613,11 @@ namespace StarterAssets
         void Carry()
         {
             // Check if
-            if(_hasAnimator)
-            {
-                if(_input.carry)
-                {
+            lockPlayerMovement = _input.carry;
 
-                }
+            if (_hasAnimator)
+            {
+                _animator.SetBool(_animIDCarryBoxPart, _input.carry);
             }
         }
         // Driving - Add Car Controller - F/Return to enter to car
