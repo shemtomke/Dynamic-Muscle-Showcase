@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button riskBarButton;
     [SerializeField] Button manualButton;
 
-    bool isPopUp = false;
+    public bool isPopUp = false;
     bool isSelectMuscle = false;
     bool isSelectRiskBar = false;
     bool isSelectManual = false;
