@@ -8,6 +8,7 @@ public class PickObject : MonoBehaviour
     public GameObject pickedObject;
     public Transform handPosition;
 
+    public bool isStartedPicking = false;
     bool isPick = false;
     StarterAssetsInputs assetsInputs;
     ThirdPersonController thirdPersonController;
@@ -33,6 +34,28 @@ public class PickObject : MonoBehaviour
         {
             pickedObject.transform.SetParent(null);
             thirdPersonController.isDropObject = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            isStartedPicking = true;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isStartedPicking = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isStartedPicking = false;
         }
     }
 }

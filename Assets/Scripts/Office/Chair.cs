@@ -5,15 +5,23 @@ using UnityEngine;
 
 public class Chair : MonoBehaviour
 {
+    public static Chair Instance;
+
     StarterAssetsInputs starterAssetsInputs;
 
     public GameObject player;
 
-    bool isSitted = false;
+    public bool isSitted = false;
+    public bool canSit = false;
 
     [Header("Player Position & Rotation")]
     public Transform playerSitTransform;
     public Transform playerExitChairTransform;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -24,8 +32,9 @@ public class Chair : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             Debug.Log("Hit Player!");
+            canSit = true;
             // Perform animation of the player to sit
-            if(starterAssetsInputs.sit)
+            if (starterAssetsInputs.sit)
             {
                 other.gameObject.transform.position = playerSitTransform.position;
                 other.gameObject.transform.rotation = playerSitTransform.rotation;
@@ -39,6 +48,7 @@ public class Chair : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            canSit = true;
             // Perform animation of the player to sit
             if (!starterAssetsInputs.sit && isSitted)
             {
@@ -57,6 +67,13 @@ public class Chair : MonoBehaviour
                 isSitted = true;
                 Debug.Log("Sit is true!");
             }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            canSit = false;
         }
     }
 }

@@ -27,6 +27,7 @@ namespace StarterAssets
 		public bool pikeWalk;
         public bool bowl;
 		public bool battle;
+        public bool dance;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -34,14 +35,15 @@ namespace StarterAssets
 		[Header("Mouse Cursor Settings")]
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
+        public bool disableMovement = false;
 
 #if ENABLE_INPUT_SYSTEM
-		public void OnMove(InputValue value)
+        public void OnMove(InputValue value)
 		{
-            if (!cursorLocked)
+            if (!cursorLocked || disableMovement)
                 return;
 
-			MoveInput(value.Get<Vector2>());
+            MoveInput(value.Get<Vector2>());
 		}
 
 		public void OnLook(InputValue value)
@@ -57,8 +59,9 @@ namespace StarterAssets
 
 		public void OnJump(InputValue value)
 		{
-			JumpInput(value.isPressed);
-		}
+            if (disableMovement) return;
+            JumpInput(value.isPressed);
+        }
         public void OnEscape(InputValue value)
         {
             EscapeInput(value.isPressed);
@@ -120,6 +123,10 @@ namespace StarterAssets
         {
             SitupsInput(value.isPressed);
         }
+        public void OnDance(InputValue value)
+        {
+            DanceInput(value.isPressed);
+        }
 #endif
 
 
@@ -144,16 +151,27 @@ namespace StarterAssets
                 cursorLocked = !cursorLocked;
             }
         }
-
         public void SprintInput(bool newSprintState)
 		{
 			sprint = newSprintState;
 		}
+        public void DanceInput(bool newDanceInput)
+        {
+            if(newDanceInput)
+            {
+                dance = !dance;
+                disableMovement = dance;
+            }
+        }
         public void SitInput(bool sitButtonPressed)
         {
+            if (!Chair.Instance.canSit)
+                return;
+
             if (sitButtonPressed)
             {
                 sit = !sit;
+                disableMovement = sit;
             }
         }
         public void StretchInput(bool stretchButtonPressed)
@@ -161,6 +179,7 @@ namespace StarterAssets
             if (stretchButtonPressed)
             {
                 stretch = !stretch;
+                disableMovement = stretch;
             }
         }
         public void JumpingJackInput(bool jumpingJackButtonPressed)
@@ -168,6 +187,7 @@ namespace StarterAssets
             if (jumpingJackButtonPressed)
             {
                 jumpingJack = !jumpingJack;
+                disableMovement = jumpingJack;
             }
         }
         public void KickBallInput(bool kickBallButtonPressed)
@@ -175,6 +195,7 @@ namespace StarterAssets
             if (kickBallButtonPressed)
             {
                 kickBall = !kickBall;
+                disableMovement = kickBall;
             }
         }
         public void DriveInput(bool newDriveState)
@@ -182,6 +203,7 @@ namespace StarterAssets
             if (newDriveState)
             {
                 drive = !drive;
+                disableMovement = drive;
             }
         }
         public void SqautInput(bool newSquatState)
@@ -189,13 +211,18 @@ namespace StarterAssets
             if (newSquatState)
             {
                 squat = !squat;
+                disableMovement = squat;
             }
         }
         public void BicepInput(bool newBicepState)
         {
+            if (!WeightDetection.Instance.isCarryWeights)
+                return;
+
             if (newBicepState)
             {
                 bicep = !bicep;
+                disableMovement = bicep;
             }
         }
         public void PikeWalkInput(bool newPikeWalkState)
@@ -203,6 +230,7 @@ namespace StarterAssets
             if (newPikeWalkState)
             {
                 pikeWalk = !pikeWalk;
+                disableMovement = pikeWalk;
             }
         }
         public void LiftPartInput(bool newLiftPart)
@@ -210,6 +238,7 @@ namespace StarterAssets
             if (newLiftPart)
             {
                 liftPart = !liftPart;
+                disableMovement = liftPart;
             }
         }
         public void SitupsInput(bool newSitupsState)
@@ -217,6 +246,7 @@ namespace StarterAssets
             if (newSitupsState)
             {
                 sitUps = !sitUps;
+                disableMovement = sitUps;
             }
         }
         public void SquatInput(bool newSquatState)
@@ -224,6 +254,7 @@ namespace StarterAssets
             if (newSquatState)
             {
                 squat = !squat;
+                disableMovement = squat;
             }
         }
         public void CarryInput(bool carryState)
@@ -231,6 +262,7 @@ namespace StarterAssets
             if (carryState)
             {
                 carry = !carry;
+                disableMovement = carry;
             }
         }
         public void PickInput(bool pickState)
@@ -238,6 +270,7 @@ namespace StarterAssets
             if (pickState)
             {
                 pick = !pick;
+                disableMovement = pick;
             }
         }
         public void PlankInput(bool newPlankState)
@@ -245,6 +278,7 @@ namespace StarterAssets
             if (newPlankState)
             {
                 plank = !plank;
+                disableMovement = plank;
             }
         }
         private void OnApplicationFocus(bool hasFocus)
