@@ -122,7 +122,6 @@ namespace StarterAssets
         public bool isPlaceBox = false;
         public bool isPickObject = false;
         public bool isDropObject = false;
-        public bool isKickBall = false;
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
@@ -483,10 +482,6 @@ namespace StarterAssets
         {
             isDropObject = true;
         }
-        void OnKickBall(AnimationEvent animationEvent)
-        {
-            isKickBall = true;
-        }
         // z - dance
         void Dance()
         {
@@ -505,6 +500,7 @@ namespace StarterAssets
                 {
                     _animator.SetTrigger(_animIDStretch);
                     _input.stretch = false;
+                    _input.disableMovement = false;
                 }
             }
         }
@@ -532,7 +528,7 @@ namespace StarterAssets
                 {
                     _animator.SetTrigger(_animIDLiftPart);
                     _input.liftPart = false;
-                    _input.disableMovement = true;
+                    _input.disableMovement = false;
                 }
             }
         }
@@ -583,6 +579,7 @@ namespace StarterAssets
                 {
                     _animator.SetTrigger(_animIDKickFootball);
                     _input.kickBall = false;
+                    _input.disableMovement = false;
                 }
             }
         }
@@ -595,6 +592,7 @@ namespace StarterAssets
                 {
                     _animator.SetTrigger(_animIDPicking);
                     _input.pick = false;
+                    _input.disableMovement = false;
                 }
             }
         }

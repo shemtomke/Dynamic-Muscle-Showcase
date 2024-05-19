@@ -20,9 +20,6 @@ public class KickBall : MonoBehaviour
     }
     private void Update()
     {
-        if(thirdPersonController.isKickBall)
-        {
-
-        }
+        
     }
 }
