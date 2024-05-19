@@ -75,8 +75,6 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
-        public bool lockPlayerMovement = false;
-
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -115,6 +113,7 @@ namespace StarterAssets
         private int _animIDCarryBoxPart;
         private int _animIDPlaceBoxPart;
         private int _animIDBicep;
+        private int _animIDDance;
 
         //animation boolean events
         public bool isStartLift = false;
@@ -183,13 +182,9 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            if(!lockPlayerMovement)
-            {
-                JumpAndGravity();
-                GroundedCheck();
-                Move();
-            }
-
+            JumpAndGravity();
+            GroundedCheck();
+            Move();
             Stretch();
             JumpingJack();
             Plank();
@@ -205,6 +200,7 @@ namespace StarterAssets
             Carry();
             Bat();
             Bowl();
+            Dance();
         }
 
         private void LateUpdate()
@@ -235,6 +231,7 @@ namespace StarterAssets
             _animIDPikeWalk = Animator.StringToHash("PikeWalk");
             _animIDLiftPart = Animator.StringToHash("LiftPart");
             _animIDBicep = Animator.StringToHash("Bicep");
+            _animIDDance = Animator.StringToHash("Dance");
         }
         private void GroundedCheck()
         {
@@ -458,8 +455,8 @@ namespace StarterAssets
         }
         void OnLiftEnd(AnimationEvent animationEvent)
         {
-            Debug.Log("Lift Has started!");
             isEndLift = true;
+            _input.disableMovement = false;
         }
         void OnFinishStretch(AnimationEvent animationEvent)
         {
@@ -490,6 +487,14 @@ namespace StarterAssets
         {
             isKickBall = true;
         }
+        // z - dance
+        void Dance()
+        {
+            if(_hasAnimator)
+            {
+                _animator.SetBool(_animIDDance, _input.dance);
+            }
+        }
 
         // R - Stretch
         void Stretch()
@@ -498,8 +503,6 @@ namespace StarterAssets
             {
                 if (_input.stretch)
                 {
-                    lockPlayerMovement = true;
-                    Debug.Log("Lock Player! " + lockPlayerMovement);
                     _animator.SetTrigger(_animIDStretch);
                     _input.stretch = false;
                 }
@@ -508,8 +511,6 @@ namespace StarterAssets
         // T - Sit
         void Sit()
         {
-            lockPlayerMovement = _input.sit;
-
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDSit, _input.sit);
@@ -518,8 +519,6 @@ namespace StarterAssets
         // Exercises - NumPad (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         void Squat()
         {
-            lockPlayerMovement = _input.squat;
-
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDSquat, _input.squat);
@@ -531,16 +530,16 @@ namespace StarterAssets
             {
                 if (_input.liftPart)
                 {
-                    lockPlayerMovement = true;
-                    Debug.Log("Lock Player! " + lockPlayerMovement);
                     _animator.SetTrigger(_animIDLiftPart);
                     _input.liftPart = false;
+                    _input.disableMovement = true;
                 }
             }
         }
         void Bicep()
         {
-            lockPlayerMovement = _input.bicep;
+            if (!WeightDetection.Instance.isCarryWeights)
+                return;
 
             if (_hasAnimator)
             {
@@ -549,8 +548,6 @@ namespace StarterAssets
         }
         void Plank()
         {
-            lockPlayerMovement = _input.plank;
-
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDPlank, _input.plank);
@@ -558,8 +555,6 @@ namespace StarterAssets
         }
         void JumpingJack() 
         {
-            lockPlayerMovement = _input.jumpingJack;
-
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDJumpingJack, _input.jumpingJack);
@@ -567,8 +562,6 @@ namespace StarterAssets
         }
         void Situps()
         {
-            lockPlayerMovement = _input.sitUps;
-
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDSitups, _input.sitUps);
@@ -576,8 +569,6 @@ namespace StarterAssets
         }
         void PikeWalk()
         {
-            lockPlayerMovement = _input.pikeWalk;
-
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDPikeWalk, _input.pikeWalk);
@@ -590,8 +581,6 @@ namespace StarterAssets
             {
                 if (_input.kickBall)
                 {
-                    lockPlayerMovement = true;
-                    Debug.Log("Lock Player! " + lockPlayerMovement);
                     _animator.SetTrigger(_animIDKickFootball);
                     _input.kickBall = false;
                 }
@@ -604,7 +593,6 @@ namespace StarterAssets
             {
                 if (_input.pick)
                 {
-                    lockPlayerMovement = true;
                     _animator.SetTrigger(_animIDPicking);
                     _input.pick = false;
                 }
@@ -612,9 +600,6 @@ namespace StarterAssets
         }
         void Carry()
         {
-            // Check if
-            lockPlayerMovement = _input.carry;
-
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDCarryBoxPart, _input.carry);
@@ -623,8 +608,6 @@ namespace StarterAssets
         // Driving - Add Car Controller - F/Return to enter to car
         void DriveCar()
         {
-            lockPlayerMovement = _input.drive;
-
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDDrive, _input.drive);
