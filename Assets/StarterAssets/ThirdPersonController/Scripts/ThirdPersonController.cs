@@ -114,6 +114,7 @@ namespace StarterAssets
         private int _animIDPlaceBoxPart;
         private int _animIDBicep;
         private int _animIDDance;
+        private int _animIDMma;
 
         //animation boolean events
         public bool isStartLift = false;
@@ -200,6 +201,7 @@ namespace StarterAssets
             Bat();
             Bowl();
             Dance();
+            MmAKick();
         }
 
         private void LateUpdate()
@@ -231,6 +233,7 @@ namespace StarterAssets
             _animIDLiftPart = Animator.StringToHash("LiftPart");
             _animIDBicep = Animator.StringToHash("Bicep");
             _animIDDance = Animator.StringToHash("Dance");
+            _animIDMma = Animator.StringToHash("MMA");
         }
         private void GroundedCheck()
         {
@@ -579,6 +582,19 @@ namespace StarterAssets
                 {
                     _animator.SetTrigger(_animIDKickFootball);
                     _input.kickBall = false;
+                    _input.disableMovement = false;
+                }
+            }
+        }
+        // MMA Kick
+        void MmAKick()
+        {
+            if (_hasAnimator)
+            {
+                if (_input.mma)
+                {
+                    _animator.SetTrigger(_animIDMma);
+                    _input.mma = false;
                     _input.disableMovement = false;
                 }
             }

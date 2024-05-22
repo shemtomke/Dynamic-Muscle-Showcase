@@ -184,6 +184,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MMAKick",
+                    "type": "Button",
+                    "id": "5a1f28e6-7861-45cd-a394-7d39bf9a6261",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -536,6 +545,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Dance",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a2c90f79-28d8-4eee-9ba9-7eee36a611d9",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "MMAKick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

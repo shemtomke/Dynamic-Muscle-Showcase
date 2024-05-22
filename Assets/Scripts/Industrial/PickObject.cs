@@ -7,6 +7,8 @@ public class PickObject : MonoBehaviour
 {
     public GameObject pickedObject;
     public Transform handPosition;
+    public Vector3 normalPos;
+    public Vector3 handPos;
 
     public bool isStartedPicking = false;
     bool isPick = false;
@@ -26,12 +28,14 @@ public class PickObject : MonoBehaviour
 
         if(thirdPersonController.isPickObject)
         {
+            transform.position = handPos;
             pickedObject.transform.SetParent(handPosition, false);
             thirdPersonController.isPickObject = false;
         }
 
         if(thirdPersonController.isDropObject)
         {
+            transform.position = normalPos;
             pickedObject.transform.SetParent(null);
             thirdPersonController.isDropObject = false;
         }

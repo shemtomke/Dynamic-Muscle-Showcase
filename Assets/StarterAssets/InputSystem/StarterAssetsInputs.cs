@@ -28,6 +28,7 @@ namespace StarterAssets
         public bool bowl;
 		public bool battle;
         public bool dance;
+        public bool mma;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -127,6 +128,10 @@ namespace StarterAssets
         {
             DanceInput(value.isPressed);
         }
+        public void OnMMAKick(InputValue value)
+        {
+            MmaKickInput(value.isPressed);
+        }
 #endif
 
 
@@ -144,6 +149,14 @@ namespace StarterAssets
 		{
 			jump = newJumpState;
 		}
+        public void MmaKickInput(bool newMmaKickState)
+        {
+            if (newMmaKickState)
+            {
+                mma = !mma;
+                disableMovement = mma;
+            }
+        }
         public void EscapeInput(bool newEscapeInput)
         {
             if (newEscapeInput)
